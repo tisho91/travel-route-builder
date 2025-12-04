@@ -1,0 +1,69 @@
+.searchPanel {
+    width: 250px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: Inter, sans-serif;
+    position: fixed;
+    z-index: 1000;
+}
+
+.searchInput {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #111827;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+
+    &::placeholder {
+        color: #9ca3af;
+    }
+
+    &:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, .2);
+    }
+}
+
+
+.countryList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.countryItem {
+    padding: 6px 10px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    color: #111827;
+    cursor: grab;
+    transition: background .15s, border-color .15s;
+    display: flex;
+    gap: 12px;
+
+    img {
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background: #e5e7eb;
+        border-color: #d1d5db;
+    }
+
+    &:active {
+        cursor: grabbing;
+        background: #dbeafe;
+        border-color: #60a5fa;
+    }
+}
+
