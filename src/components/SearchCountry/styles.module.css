@@ -7,8 +7,11 @@
     flex-direction: column;
     gap: 12px;
     font-family: Inter, sans-serif;
-    position: fixed;
     z-index: 1000;
+    height: auto;
+    box-sizing: border-box;
+    overflow: hidden;
+
 }
 
 .searchInput {
@@ -35,8 +38,10 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 400px;
     overflow-y: auto;
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
 .countryItem {

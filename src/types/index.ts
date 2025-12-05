@@ -7,7 +7,8 @@ export interface Country {
         png: string;
         svg: string;
         alt: string;
-    }
+    },
+    cca3: string;
 }
 
 export interface Position {
@@ -15,14 +16,14 @@ export interface Position {
     y: number;
 }
 
-export interface AbstractNodeData {
+export interface AbstractNodeBaseData {
     id: string;
-    label: string;
     position: Position;
-    type: string
+    type: string;
+    label: string;
 }
 
-export interface CountryNodeData extends AbstractNodeData {
-    flag: string;
+export interface CountryNodeSpecificData {
+    flag: string,
+    flagAlt: string,
 }
-

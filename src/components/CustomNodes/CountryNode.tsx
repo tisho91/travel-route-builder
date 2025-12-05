@@ -4,14 +4,15 @@ import * as React from "react";
 
 export interface CountryData {
     flag: string;
-    name: string;
+    label: string;
+    flagAlt: string;
 }
 
 export const CountryNodeComponent: React.FC<{ data: CountryData }> = ({data}) => {
     return (
         <GenericNode className={styles.countryNode}>
-            <img src={data.flag} alt={data.name} />
-            <span>{data.name}</span>
+            <img src={data.flag} alt={data.flagAlt} />
+            <span>{data.label}</span>
         </GenericNode>
     );
 };

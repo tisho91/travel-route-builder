@@ -1,11 +1,17 @@
 import {SearchCountry} from "./components/SearchCountry";
-import {Graph} from "./components/Graph";
+import {GraphCanvas} from "./components/GraphCanvas";
+import {ReactFlowProvider} from "@xyflow/react";
+import {GraphProvider} from "./Contexts/GraphContextProvider.tsx";
 
 export default function App() {
     return (
-        <div style={{width: '100vw', height: '100vh'}}>
-            <SearchCountry/>
-            <Graph/>
-        </div>
+        <GraphProvider>
+            <ReactFlowProvider>
+                <div style={{display: 'flex', width: '100vw', height: '100vh'}}>
+                    <SearchCountry/>
+                    <GraphCanvas/>
+                </div>
+            </ReactFlowProvider>
+        </GraphProvider>
     );
 }

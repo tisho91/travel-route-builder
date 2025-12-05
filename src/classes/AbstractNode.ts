@@ -1,16 +1,16 @@
-import type {AbstractNodeData, Position} from "../types";
+import type {Position} from "../types";
 
-export abstract class AbstractNode {
+export class AbstractNode<TSpec = object> {
     id: string;
-    label: string;
     position: Position;
     type: string
+    data: TSpec
 
-    protected constructor({id, position, label, type}: AbstractNodeData) {
+
+    constructor({id, position, type, data}: { id: string, position: Position, type: string, data: TSpec }) {
         this.id = id;
-        this.label = label;
         this.position = position;
         this.type = type;
+        this.data = data
     }
-
 }
