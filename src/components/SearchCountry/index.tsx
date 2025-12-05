@@ -1,14 +1,15 @@
 import {debounce} from "../../utils";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import {searchCountryByName} from "../../handlers";
 import styles from './styles.module.css'
 import type {Country} from "../../types";
 import {CountryItem} from "./Country";
-import {useGraphContext} from "../../Contexts/GraphContext.ts";
+import {useGraphFlow} from "../../hooks/useGraphFlow.ts";
 
 export const SearchCountry = () => {
     const [countries, setCountries] = useState<Country[]>([]);
-    const {graph} = useGraphContext()
+    const ref = useRef<HTMLDivElement>(null);
+    const {nodes} = useGraphFlow(ref)
     const [error, setError] = useState<string>();
     const debouncedSearch = useMemo(() =>
             debounce(async (searchWord: string) => {
@@ -30,13 +31,12 @@ export const SearchCountry = () => {
         , []);
 
 
-    // TODO FIX
     const filteredCountries = useMemo(() => {
-        const nodes = Array.from(graph.nodes.values());
+        console.log(nodes)
         return countries.filter(country => {
             return !nodes.some(node => node.id === country.cca3)
         })
-    }, [graph.nodes, countries]);
+    }, [nodes, countries]);
 
     return (
         <aside className={styles.searchPanel}>

@@ -10,12 +10,13 @@ export interface NodeData<TNodeSpecific> {
 }
 
 export const useHandleDragAndDrop = <TNodeSpecific>() => {
-    const {graph} = useGraphContext()
+    const {updateGraph} = useGraphContext()
     const {screenToFlowPosition} = useReactFlow();
     const onDragStart = useCallback((event: React.DragEvent, nodeData: NodeData<TNodeSpecific>) => {
         event.dataTransfer.setData("nodeData", JSON.stringify(nodeData));
         event.dataTransfer.effectAllowed = "move";
     }, []);
+
 
 
     const onDragOver = useCallback((e: React.DragEvent) => {
@@ -30,19 +31,22 @@ export const useHandleDragAndDrop = <TNodeSpecific>() => {
             y: event.clientY
         });
 
-        graph.addNode({
-            position: flowPosition,
-            id: data.id,
-            type: data.type,
-            data: data.nodeSpecific
-        })
+        updateGraph(prevGraph => {
+            const newGraph = prevGraph.clone();
+            newGraph.addNode({
+                position: flowPosition,
+                id: data.id,
+                type: data.type,
+                data: data.nodeSpecific
+            });
+            return newGraph; // Връщате новата инстанция
+        });
 
-    }, [graph, screenToFlowPosition])
+    }, [screenToFlowPosition, updateGraph])
 
     return {
         onDragStart,
         onDragOver,
         onDrop,
-        graph
     }
 }

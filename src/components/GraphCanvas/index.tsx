@@ -12,11 +12,11 @@ const nodeTypes = {
 export const GraphCanvas = () => {
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const {nodes, onDropWrapper, serialize, onNodesChange} = useGraphFlow(containerRef);
+    const {nodes, onDropWrapper, onNodesChange} = useGraphFlow(containerRef);
     const {onDragOver} = useHandleDragAndDrop();
     return (
         <div
-            style={{flexGrow: 1, height: '100%'}}
+            style={{flex: 1, position: 'relative'}}
             ref={containerRef}
             onDragOver={onDragOver}
             onDrop={onDropWrapper}
