@@ -10,7 +10,6 @@ const nodeTypes = {
 }
 
 export const GraphCanvas = () => {
-
     const containerRef = useRef<HTMLDivElement>(null);
     const {
         onDropWrapper,

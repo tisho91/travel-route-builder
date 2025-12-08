@@ -1,6 +1,5 @@
 import {GenericNode} from "./GenericNode.tsx";
 import styles from './styles.module.css'
-import * as React from "react";
 
 export interface CountryData {
     flag: string;
@@ -8,10 +7,15 @@ export interface CountryData {
     flagAlt: string;
 }
 
-export const CountryNodeComponent: React.FC<{ data: CountryData }> = ({data}) => {
+export interface CountryNodeProps {
+    id: string;
+    data: CountryData;
+}
+
+export const CountryNodeComponent = ({id, data}: CountryNodeProps) => {
     return (
-        <GenericNode className={styles.countryNode}>
-            <img src={data.flag} alt={data.flagAlt} />
+        <GenericNode className={styles.countryNode} nodeId={id}>
+            <img src={data.flag} alt={data.flagAlt}/>
             <span>{data.label}</span>
         </GenericNode>
     );

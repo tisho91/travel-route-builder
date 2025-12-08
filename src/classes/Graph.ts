@@ -2,6 +2,7 @@ import {Edge} from "./Edge.ts";
 import {AbstractNode} from "./AbstractNode.ts";
 import type {XYPosition} from "@xyflow/react";
 import type {BlockedRoute, EdgeDetails} from "../types";
+import {edgeId} from "../utils";
 
 
 export class Graph {
@@ -31,19 +32,31 @@ export class Graph {
     }
 
     removeNode(id: string): Graph {
-        const newNodes = new Map(this.nodes);
-        const newEdges = new Map(this.edges);
 
-        newNodes.delete(id);
+        if (!this.nodes.has(id)) return this;
+        this.nodes.delete(id);
 
-        for (const [key, e] of newEdges) {
-            if (e.source === id || e.target === id) {
-                newEdges.delete(key);
+        const incoming = Array.from(this.edges.values()).filter(e => e.target === id);
+        const outgoing = Array.from(this.edges.values()).filter(e => e.source === id);
+
+        let graph = new Graph(
+            new Map(this.nodes),
+            new Map(this.edges),
+        );
+
+        for (const edge of [...incoming, ...outgoing]) {
+            graph = this.removeEdge(edge.id)
+        }
+
+        for (const inEdge of incoming) {
+            for (const outEdge of outgoing) {
+                graph = graph.addEdge({source: inEdge.source, target: outEdge.target});
             }
         }
 
-        return new Graph(newNodes, newEdges);
+        return graph;
     }
+
 
     updateNodePosition(id: string, position: XYPosition): Graph {
         const node = this.nodes.get(id);
@@ -58,7 +71,7 @@ export class Graph {
 
     addEdge({source, target}: EdgeDetails): Graph {
         const newEdges = new Map(this.edges);
-        const id = `${source}-${target}`;
+        const id = edgeId({source, target});
         if (this.blockedRoutes.some(r => r.from === source && r.to === target)) {
             console.warn(`Blocked route: ${source} → ${target}`);
             return this;
@@ -92,9 +105,9 @@ export class Graph {
         return dfs(target);
     }
 
-    removeEdge({source, target}: EdgeDetails): Graph {
+    removeEdge(id: string): Graph {
         const newEdges = new Map(this.edges);
-        newEdges.delete(`${source}-${target}`);
+        newEdges.delete(id);
         return new Graph(new Map(this.nodes), newEdges);
     }
 
