@@ -1,4 +1,4 @@
-import {ReactFlow} from "@xyflow/react";
+import {Background, ReactFlow} from "@xyflow/react";
 import {useRef} from "react";
 import {useHandleDragAndDrop} from "../../hooks/useHandleDragAndDrop.ts";
 import {CountryNodeComponent} from "../CustomNodes/CountryNode.tsx";
@@ -12,7 +12,16 @@ const nodeTypes = {
 export const GraphCanvas = () => {
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const {nodes, onDropWrapper, onNodesChange} = useGraphFlow(containerRef);
+    const {
+        onDropWrapper,
+        onNodesChange,
+        onNodeDragStop,
+        nodes,
+        edges,
+        onConnect,
+    } = useGraphFlow(containerRef);
+
+
     const {onDragOver} = useHandleDragAndDrop();
     return (
         <div
@@ -23,12 +32,14 @@ export const GraphCanvas = () => {
         >
             <ReactFlow
                 nodes={nodes}
-                edges={[]}
+                edges={edges}
                 nodeTypes={nodeTypes}
+                onNodeDragStop={onNodeDragStop}
                 onNodesChange={onNodesChange}
-                // onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
                 fitView
             >
+                <Background/>
             </ReactFlow>
         </div>
     )

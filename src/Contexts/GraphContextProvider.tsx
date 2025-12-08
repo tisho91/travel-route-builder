@@ -5,10 +5,12 @@ import {useCallback, useMemo, useState} from "react";
 
 
 export const GraphProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [graphState, setGraphState] = useState(() => new Graph());
+    const [graphState, setGraphState] = useState(() => Graph.empty());
     const updateGraph = useCallback((updateFn: (prevGraph: Graph) => Graph) => {
-        setGraphState(updateFn);
+        setGraphState(prev => updateFn(prev));
     }, []);
+
+
 
     const contextValue = useMemo(() => ({
         graph: graphState,

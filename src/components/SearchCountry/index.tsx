@@ -32,7 +32,6 @@ export const SearchCountry = () => {
 
 
     const filteredCountries = useMemo(() => {
-        console.log(nodes)
         return countries.filter(country => {
             return !nodes.some(node => node.id === country.cca3)
         })

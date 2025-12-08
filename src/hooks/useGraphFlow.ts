@@ -1,13 +1,41 @@
 import {useGraphContext} from "../Contexts/GraphContext.ts";
-import React, {useMemo} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useHandleDragAndDrop} from "./useHandleDragAndDrop.ts";
-import {type Node} from '@xyflow/react'
-import {Graph} from "../classes/Graph.ts";
-
+import {applyNodeChanges, type Connection, type Edge, type Node, type NodeChange} from "@xyflow/react";
 
 export const useGraphFlow = (ref: React.RefObject<HTMLDivElement | null>) => {
     const {graph, updateGraph} = useGraphContext();
-    const {onDrop} = useHandleDragAndDrop()
+    const {onDrop} = useHandleDragAndDrop();
+    const nodes = useMemo(() => graph.getNodes().map((node) => ({
+        id: node.id,
+        type: node.type,
+        position: node.position,
+        data: {
+            ...node.data
+        }
+    })), [graph]);
+
+    const edges = useMemo(() => {
+        return graph.getEdges().map((edge) => {
+            return {
+                ...edge,
+                markerEnd: {type: 'arrow'},
+                label: `${edge.source} -> ${edge.target}`,
+                reconnectable: 'source'
+            }
+        })
+    }, [graph]);
+    const [flowNodes, setFlowNodes] = useState<Node[]>([]);
+    const [flowEdges, setFlowEdges] = useState<Edge[]>([]);
+
+    useEffect(() => {
+        setFlowNodes(nodes);
+    }, [nodes]);
+
+    useEffect(() => {
+        setFlowEdges(edges as Edge[]);
+    }, [edges]);
+
 
     const onDropWrapper = (event: React.DragEvent) => {
         if (!ref.current) return;
@@ -15,32 +43,38 @@ export const useGraphFlow = (ref: React.RefObject<HTMLDivElement | null>) => {
 
     };
 
-    const nodes = useMemo(() => {
-        return Array.from(graph.nodes.values()).map((n): Node => ({
-            id: n.id,
-            type: n.type,
-            position: n.position,
-            data: {
-                ...n.data
-            }
-        }));
-    }, [graph])
+
+    const onNodeDragStop = (_event: React.MouseEvent, node: Node) => {
+        updateGraph(prev => prev.updateNodePosition(node.id, node.position));
+    };
+
+
+    const onNodesChange = useCallback(
+        (changes: NodeChange[]) =>
+            setFlowNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+        []
+    );
+
+    const onConnect = useCallback((connection: Connection) => {
+        if (!connection.source || !connection.target) return;
+        const newEdge = {
+            source: connection.source,
+            target: connection.target,
+        };
+        updateGraph(prev => prev.addEdge(newEdge));
+    }, [updateGraph]);
 
     const serialize = () => {
-        const serialized = graph.serialize();
-        // console.log('serialized', serialized);
-        // console.log(123, Graph.deserialize(serialized));
+        console.log(graph.getEdges())
     }
-    // TODO here
-    // const onNodesChange = useCallback(
-    //     (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-    //     [],
-    // );
+
     return {
         onDropWrapper,
-        serialize,
-        onNodesChange: () => {
-        },
-        nodes
+        nodes: flowNodes,
+        edges: flowEdges,
+        onNodeDragStop,
+        onNodesChange,
+        onConnect,
+        serialize
     }
 }

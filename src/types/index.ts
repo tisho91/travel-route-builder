@@ -11,19 +11,13 @@ export interface Country {
     cca3: string;
 }
 
-export interface Position {
-    x: number;
-    y: number;
+
+export type BlockedRoute = { from: string; to: string };
+
+
+export interface EdgeDetails {
+    source: string;
+    target: string;
 }
 
-export interface AbstractNodeBaseData {
-    id: string;
-    position: Position;
-    type: string;
-    label: string;
-}
-
-export interface CountryNodeSpecificData {
-    flag: string,
-    flagAlt: string,
-}
+export type NodeType = 'country' | 'hotel' | 'airport'

@@ -18,7 +18,6 @@ export const useHandleDragAndDrop = <TNodeSpecific>() => {
     }, []);
 
 
-
     const onDragOver = useCallback((e: React.DragEvent) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
@@ -31,18 +30,19 @@ export const useHandleDragAndDrop = <TNodeSpecific>() => {
             y: event.clientY
         });
 
-        updateGraph(prevGraph => {
-            const newGraph = prevGraph.clone();
-            newGraph.addNode({
-                position: flowPosition,
-                id: data.id,
-                type: data.type,
-                data: data.nodeSpecific
-            });
-            return newGraph; // Връщате новата инстанция
-        });
+        const newNode = {
+            position: flowPosition,
+            id: data.id,
+            type: data.type,
+            data: data.nodeSpecific
+        }
+
+        updateGraph((prevGraph) =>
+            prevGraph.addNode(newNode)
+        );
 
     }, [screenToFlowPosition, updateGraph])
+
 
     return {
         onDragStart,

@@ -1,9 +1,11 @@
 export class Edge {
-    from: string;
-    to: string;
+    source: string;
+    target: string;
+    id: string;
 
-    constructor({from, to}: Edge) {
-        this.from = from;
-        this.to = to;
+    constructor({source, target, id}: Edge) {
+        this.source = source;
+        this.target = target;
+        this.id = id;
     }
 }
