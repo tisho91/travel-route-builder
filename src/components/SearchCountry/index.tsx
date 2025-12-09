@@ -1,5 +1,5 @@
 import {debounce} from "../../utils";
-import {useMemo, useRef, useState} from "react";
+import {useMemo,  useState} from "react";
 import {searchCountryByName} from "../../handlers";
 import styles from './styles.module.css'
 import type {Country} from "../../types";
@@ -8,8 +8,7 @@ import {useGraphFlow} from "../../hooks/useGraphFlow.ts";
 
 export const SearchCountry = () => {
     const [countries, setCountries] = useState<Country[]>([]);
-    const ref = useRef<HTMLDivElement>(null);
-    const {nodes} = useGraphFlow(ref)
+    const {nodes} = useGraphFlow()
     const [error, setError] = useState<string>();
     const debouncedSearch = useMemo(() =>
             debounce(async (searchWord: string) => {
@@ -42,7 +41,7 @@ export const SearchCountry = () => {
             <input
                 className={styles.searchInput}
                 type="text"
-                placeholder="Search country..."
+                placeholder="Search country"
                 onChange={(e) => debouncedSearch(e.target.value)}
             />
 

@@ -1,7 +1,7 @@
 import styles from "../styles.module.css";
 import type {Country} from "../../../types";
 import {useHandleDragAndDrop} from "../../../hooks/useHandleDragAndDrop.ts";
-import * as React from "react";
+import {type DragEvent} from 'react'
 
 interface CountryNode {
     label: string;
@@ -25,7 +25,7 @@ export const CountryItem = ({flags, name, cca3}: Country) => {
         <li
             className={styles.countryItem}
             draggable
-            onDragStart={(event: React.DragEvent) => onDragStart(event, nodeData)}
+            onDragStart={(event: DragEvent) => onDragStart(event, nodeData)}
 
         >
             <img src={flags.svg} alt={flags.alt} className={styles.flag}/>

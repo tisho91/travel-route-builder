@@ -12,7 +12,7 @@ export interface CountryNodeProps {
     data: CountryData;
 }
 
-export const CountryNodeComponent = ({id, data}: CountryNodeProps) => {
+export const CountryNode = ({id, data}: CountryNodeProps) => {
     return (
         <GenericNode className={styles.countryNode} nodeId={id}>
             <img src={data.flag} alt={data.flagAlt}/>

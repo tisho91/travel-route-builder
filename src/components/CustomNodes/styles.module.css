@@ -1,8 +1,6 @@
 .genericNode {
     padding: 12px 16px;
     border-radius: 12px;
-    border: 2px solid #4a90e2;
-    background-color: #e8f0fe;
     min-width: 140px;
     text-align: center;
     font-family: 'Inter', sans-serif;
@@ -17,19 +15,28 @@
 
     .removeButton {
         position: absolute;
-        right: -10px;
-        top: -10px;
-        border: 1px solid red;
+        top: -8px;
+        right: -8px;
+        width: 16px;
+        height: 16px;
+        background: #ef4444;
+        color: white;
+        border: none;
         border-radius: 50%;
-        width: 24px;
-        height: 24px;
         cursor: pointer;
+        font-size: 10px;
+        font-weight: bold;
+        line-height: 0;
         display: flex;
         justify-content: center;
+        align-items: center;
+        padding: 0;
     }
 }
 
 .countryNode {
+    border: 2px solid #4a90e2;
+    background-color: #e8f0fe;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -39,5 +46,9 @@
         border-radius: 2px;
         object-fit: cover;
     }
+}
 
+
+.airportNode {
+    border: 2px solid red;
 }

@@ -1,12 +1,14 @@
 import {Background, ReactFlow} from "@xyflow/react";
 import {useRef} from "react";
 import {useHandleDragAndDrop} from "../../hooks/useHandleDragAndDrop.ts";
-import {CountryNodeComponent} from "../CustomNodes/CountryNode.tsx";
+import {CountryNode} from "../CustomNodes/CountryNode.tsx";
+import {AirportNode} from "../CustomNodes/AirportNode.tsx";
 import {useGraphFlow} from "../../hooks/useGraphFlow.ts";
 
 
 const nodeTypes = {
-    country: CountryNodeComponent
+    country: CountryNode,
+    airport: AirportNode,
 }
 
 export const GraphCanvas = () => {
@@ -17,6 +19,9 @@ export const GraphCanvas = () => {
         nodes,
         edges,
         onConnect,
+        onReconnectEnd,
+        onReconnectStart,
+        onReconnect
     } = useGraphFlow();
 
 
@@ -36,6 +41,10 @@ export const GraphCanvas = () => {
                 onNodesChange={onNodesChange}
                 onConnect={onConnect}
                 fitView
+                snapToGrid
+                onReconnectEnd={onReconnectEnd}
+                onReconnectStart={onReconnectStart}
+                onReconnect={onReconnect}
             >
                 <Background/>
             </ReactFlow>

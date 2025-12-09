@@ -1,9 +1,10 @@
 import {useGraphContext} from "../Contexts/GraphContext.ts";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {applyNodeChanges, type Connection, type Edge, type Node, type NodeChange} from "@xyflow/react";
 
 export const useGraphFlow = () => {
     const {graph, updateGraph} = useGraphContext();
+    const edgeReconnectSuccessful = useRef(true);
     const nodes = useMemo(() => graph.getNodes().map((node) => ({
         id: node.id,
         type: node.type,
@@ -35,9 +36,6 @@ export const useGraphFlow = () => {
     }, [edges]);
 
 
-
-
-
     const onNodeDragStop = (_event: React.MouseEvent, node: Node) => {
         updateGraph(prev => prev.updateNodePosition(node.id, node.position));
     };
@@ -58,6 +56,27 @@ export const useGraphFlow = () => {
         updateGraph(prev => prev.addEdge(newEdge));
     }, [updateGraph]);
 
+    const onReconnect = useCallback((oldEdge: Edge, newConnection: Connection) => {
+        edgeReconnectSuccessful.current = true;
+        updateGraph(prev => prev.removeEdge(oldEdge.id));
+        updateGraph(prev => prev.addEdge({
+            source: newConnection.source,
+            target: newConnection.target
+        }));
+    }, [updateGraph]);
+
+    const onReconnectStart = useCallback(() => {
+        edgeReconnectSuccessful.current = false;
+    }, []);
+
+    const onReconnectEnd = useCallback((_: MouseEvent | TouchEvent, edge: Edge) => {
+        if (!edgeReconnectSuccessful.current) {
+            updateGraph(prev => prev.removeEdge(edge.id));
+        }
+
+        edgeReconnectSuccessful.current = true;
+    }, [updateGraph]);
+
 
     return {
         nodes: flowNodes,
@@ -65,5 +84,9 @@ export const useGraphFlow = () => {
         onNodeDragStop,
         onNodesChange,
         onConnect,
+        onReconnect,
+        onReconnectEnd,
+        onReconnectStart
+
     }
 }

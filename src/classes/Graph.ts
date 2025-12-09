@@ -31,9 +31,8 @@ export class Graph {
     }
 
     addNode(node: AbstractNode): Graph {
-        const newNode = new AbstractNode({...node})
         const newNodes = new Map(this.nodes);
-        newNodes.set(newNode.id, newNode);
+        newNodes.set(node.id, node);
         return new Graph(newNodes, new Map(this.edges), this.blockedRoutes);
     }
 
