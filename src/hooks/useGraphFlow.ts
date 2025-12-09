@@ -1,11 +1,9 @@
 import {useGraphContext} from "../Contexts/GraphContext.ts";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {useHandleDragAndDrop} from "./useHandleDragAndDrop.ts";
 import {applyNodeChanges, type Connection, type Edge, type Node, type NodeChange} from "@xyflow/react";
 
-export const useGraphFlow = (ref: React.RefObject<HTMLDivElement | null>) => {
+export const useGraphFlow = () => {
     const {graph, updateGraph} = useGraphContext();
-    const {onDrop} = useHandleDragAndDrop();
     const nodes = useMemo(() => graph.getNodes().map((node) => ({
         id: node.id,
         type: node.type,
@@ -37,11 +35,7 @@ export const useGraphFlow = (ref: React.RefObject<HTMLDivElement | null>) => {
     }, [edges]);
 
 
-    const onDropWrapper = (event: React.DragEvent) => {
-        if (!ref.current) return;
-        onDrop(event);
 
-    };
 
 
     const onNodeDragStop = (_event: React.MouseEvent, node: Node) => {
@@ -64,17 +58,12 @@ export const useGraphFlow = (ref: React.RefObject<HTMLDivElement | null>) => {
         updateGraph(prev => prev.addEdge(newEdge));
     }, [updateGraph]);
 
-    const serialize = () => {
-        console.log(graph.getEdges())
-    }
 
     return {
-        onDropWrapper,
         nodes: flowNodes,
         edges: flowEdges,
         onNodeDragStop,
         onNodesChange,
         onConnect,
-        serialize
     }
 }

@@ -12,16 +12,15 @@ const nodeTypes = {
 export const GraphCanvas = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const {
-        onDropWrapper,
         onNodesChange,
         onNodeDragStop,
         nodes,
         edges,
         onConnect,
-    } = useGraphFlow(containerRef);
+    } = useGraphFlow();
 
 
-    const {onDragOver} = useHandleDragAndDrop();
+    const {onDragOver, onDropWrapper} = useHandleDragAndDrop(containerRef);
     return (
         <div
             style={{flex: 1, position: 'relative'}}
