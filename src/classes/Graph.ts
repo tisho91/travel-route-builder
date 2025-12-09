@@ -5,10 +5,16 @@ import type {BlockedRoute, EdgeDetails} from "../types";
 import {edgeId} from "../utils";
 
 
+// for testing purposes
+const blockedRoutesTest: BlockedRoute[] = [
+    {from: "BGR", to: "GRC"},
+];
+
+
 export class Graph {
     private readonly nodes: Map<string, AbstractNode>;
     private readonly edges: Map<string, Edge>;
-    private blockedRoutes: BlockedRoute[] = [];
+    private readonly blockedRoutes: BlockedRoute[] = [];
 
     private constructor(
         nodes?: Map<string, AbstractNode>,
@@ -17,7 +23,7 @@ export class Graph {
     ) {
         this.nodes = nodes ?? new Map();
         this.edges = edges ?? new Map();
-        this.blockedRoutes = blockedRoutes ?? []
+        this.blockedRoutes = blockedRoutes ?? blockedRoutesTest
     }
 
     static empty(): Graph {
@@ -28,7 +34,7 @@ export class Graph {
         const newNode = new AbstractNode({...node})
         const newNodes = new Map(this.nodes);
         newNodes.set(newNode.id, newNode);
-        return new Graph(newNodes, new Map(this.edges));
+        return new Graph(newNodes, new Map(this.edges), this.blockedRoutes);
     }
 
     removeNode(id: string): Graph {
@@ -42,6 +48,7 @@ export class Graph {
         let graph = new Graph(
             new Map(this.nodes),
             new Map(this.edges),
+            this.blockedRoutes,
         );
 
         for (const edge of [...incoming, ...outgoing]) {
@@ -66,7 +73,7 @@ export class Graph {
         const newNodes = new Map(this.nodes);
         newNodes.set(id, updated);
 
-        return new Graph(newNodes, new Map(this.edges));
+        return new Graph(newNodes, new Map(this.edges), this.blockedRoutes);
     }
 
     addEdge({source, target}: EdgeDetails): Graph {
@@ -108,7 +115,7 @@ export class Graph {
     removeEdge(id: string): Graph {
         const newEdges = new Map(this.edges);
         newEdges.delete(id);
-        return new Graph(new Map(this.nodes), newEdges);
+        return new Graph(new Map(this.nodes), newEdges, this.blockedRoutes);
     }
 
 
@@ -124,7 +131,8 @@ export class Graph {
     serialize(): string {
         return JSON.stringify({
             nodes: this.getNodes(),
-            edges: this.getEdges()
+            edges: this.getEdges(),
+            blockedRoutes: this.blockedRoutes
         });
     }
 
@@ -132,6 +140,7 @@ export class Graph {
         const obj = JSON.parse(json);
         const nodes = new Map<string, AbstractNode>(obj.nodes.map((n: AbstractNode) => [n.id, n]));
         const edges = new Map<string, Edge>(obj.edges.map((e: Edge) => [e.id, e]));
-        return new Graph(nodes, edges);
+        const blockedRoutes = obj.blockedRoutes
+        return new Graph(nodes, edges, blockedRoutes);
     }
 }
