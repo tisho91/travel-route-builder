@@ -15,12 +15,12 @@ export const useGraphFlow = () => {
     })), [graph]);
 
     const edges = useMemo(() => {
-        return graph.getEdges().map((edge) => {
+        return graph.getEdges().map((edge: Edge) => {
             return {
                 ...edge,
                 markerEnd: {type: 'arrow'},
                 label: `${edge.source} -> ${edge.target}`,
-                reconnectable: 'source'
+                reconnectable: true
             }
         })
     }, [graph]);

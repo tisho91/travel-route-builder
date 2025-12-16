@@ -47,10 +47,10 @@ export const GraphStorageControls = () => {
             setName(e.target.value)
         }}>
             <input type={"text"} placeholder={'Save or Load graph'}/>
-            <button onClick={saveGraph} className="p-2 bg-green-500 text-white rounded">
+            <button onClick={saveGraph} >
                 Save Graph
             </button>
-            <button onClick={loadGraph} className="p-2 bg-blue-500 text-white rounded">
+            <button onClick={loadGraph}>
                 Load Graph
             </button>
             {/*    for testing purposes only*/}
