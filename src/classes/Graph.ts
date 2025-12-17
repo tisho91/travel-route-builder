@@ -51,7 +51,7 @@ export class Graph {
         );
 
         for (const edge of [...incoming, ...outgoing]) {
-            graph = this.removeEdge(edge.id)
+            graph = graph.removeEdge(edge.id)
         }
 
         for (const inEdge of incoming) {

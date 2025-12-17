@@ -9,7 +9,7 @@ export interface NodeData<TNodeSpecific> {
     nodeSpecific: TNodeSpecific;
 }
 
-export const useHandleDragAndDrop = <TNodeSpecific>(ref?: RefObject<HTMLDivElement | null>) => {
+export const useHandleDragAndDrop = <TNodeSpecific extends object>(ref?: RefObject<HTMLDivElement | null>) => {
     const {updateGraph} = useGraphContext()
     const {screenToFlowPosition} = useReactFlow();
     const onDragStart = useCallback((event: DragEvent, nodeData: NodeData<TNodeSpecific>) => {
@@ -30,7 +30,7 @@ export const useHandleDragAndDrop = <TNodeSpecific>(ref?: RefObject<HTMLDivEleme
             y: event.clientY
         });
 
-        const newNode = new AbstractNode({
+        const newNode = new AbstractNode<TNodeSpecific>({
             position: flowPosition,
             id: data.id,
             type: data.type,

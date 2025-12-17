@@ -10,7 +10,6 @@ export const GraphProvider= ({children} : {children: ReactNode}) => {
     }, []);
 
 
-
     const contextValue = useMemo(() => ({
         graph: graphState,
         updateGraph,

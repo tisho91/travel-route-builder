@@ -3,6 +3,7 @@ import {useGraphContext} from "../../Contexts/GraphContext.ts";
 import {Graph} from "../../classes/Graph.ts";
 import styles from './style.module.css'
 import {AbstractNode} from "../../classes/AbstractNode.ts";
+import  {type AirportData} from "../CustomNodes/AirportNode.tsx";
 
 
 export const GraphStorageControls = () => {
@@ -26,12 +27,10 @@ export const GraphStorageControls = () => {
     };
 
     const addAirport = useCallback(() => {
-        return updateGraph(prev => prev.addNode(new AbstractNode({
+        return updateGraph(prev => prev.addNode(new AbstractNode<AirportData>({
             type: 'airport',
             data: {
-                flag: '',
-                label: '1',
-                flagAlt: '123'
+                label: 'first',
             },
             id: "rnd-id-123",
             position: {
@@ -54,9 +53,9 @@ export const GraphStorageControls = () => {
                 Load Graph
             </button>
             {/*    for testing purposes only*/}
-            {/*<button onClick={addAirport}>
-                Add Airport
-            </button>*/}
+            {/*<button onClick={addAirport}>*/}
+            {/*    Add Airport*/}
+            {/*</button>*/}
         </div>
     );
 };
